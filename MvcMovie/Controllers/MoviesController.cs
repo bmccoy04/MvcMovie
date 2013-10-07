@@ -116,5 +116,34 @@ namespace MvcMovie.Controllers
             db.Dispose();
             base.Dispose(disposing);
         }
+
+
+        public PartialViewResult _SearchIndex(string searchString)
+        {
+            var movies = from m in db.Movies
+                         select m;
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                movies = movies.Where(s => s.Title.Contains(searchString));
+            }
+
+            return PartialView(movies); 
+        }
+
+        [HttpGet]
+        public ActionResult Submit(string searchString)
+        {
+            var movies = from m in db.Movies
+                         select m;
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                movies = movies.Where(s => s.Title.Contains(searchString));
+            }
+
+            return PartialView("_SearchIndex", movies); 
+        }
+
     }
 }
